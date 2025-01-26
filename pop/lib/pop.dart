@@ -29,32 +29,6 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
     overlays.add('GameOver');  // Add a game over overlay
   }
 
-  void reset() async {
-    // Clear existing game state
-    world.removeAll(world.children);
-    
-    // Create new world
-    world = Level();
-    
-    cam.viewfinder.anchor = Anchor.topLeft;
-
-    // Add components back
-    addAll([cam, world]);
-
-
-  world.add(_pink);
-
-    camera.viewport.add(Hud(pink: _pink));
-
-
-    var _dude = Dude(world: world)..position = Vector2(165 , 80);
-    world.add(_dude);
-
-    resumeEngine();
-
-    // Reset any game state variables
-  }
-
 
     @override
   FutureOr<void> onLoad() async {
@@ -91,10 +65,10 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
 
 _pink = Pink(world: world)
     ..position = Vector2(320, 180)
-    ..debugMode = true; // Enable debug mode for Pink
+    ..debugMode = false; // Enable debug mode for Pink
   world.add(_pink);
-
-    camera.viewport.add(Hud(pink: _pink));
+// 
+    // camera.viewport.add(Hud(pink: _pink));
 
 
      _dude = Dude(world: world)..position = Vector2(165 , 80);

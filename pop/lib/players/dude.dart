@@ -209,11 +209,15 @@ void onCollisionEnd(PositionComponent other) {
   }
 
 
-  if (other is Bullet && (other.player != Player.B)){
-    
-    OnHit(2);
+   if (other is Bullet ){
+
+    if (other.player != Player.B){
+         OnHit(2);
     other.removeFromParent();
     print("I got shot");
+    }
+    
+ 
   }
 
   
@@ -279,9 +283,7 @@ void onCollisionEnd(PositionComponent other) {
    @override
   void update(double dt) {
 
-    if(health == 0){
-      print("Player dead");
-    }
+   
     // print(hasJumped);
 
     velocity2.y += gravity;  
@@ -387,7 +389,11 @@ if (hasJumped) {
     }
 
     velocity2.y = velocity2.y.clamp(-jumpSpeed, terminalVelocity);
-
+    if(health <= 0){
+    removeFromParent();  // Remove player from game
+    game.gameOver();     // Trigger game over
+    return;             // Stop further updates
+  }
     super.update(dt);
 
   }
@@ -419,6 +425,8 @@ if (hasJumped) {
     health-=amount;
     print(health);
   }
+
+  
 
   
 

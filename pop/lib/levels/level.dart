@@ -29,6 +29,8 @@ class Level extends World with HasGameRef<PopGame> {
       add(BlockComponent(groundSize: Vector2(obj.width,obj.height), gridPosition: Vector2(obj.x, obj.y)));
     }
 
+    
+
     if (backgroundLayer != null) {
       final backgroundColor = backgroundLayer.properties.getValue('BackgroundColor') ?? 'Blue';
 

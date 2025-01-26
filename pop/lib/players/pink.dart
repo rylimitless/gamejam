@@ -30,7 +30,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
 
 
-  double health = 10;
+  double health = 100;
 
  late final SpawnComponent _bulletSpawner;
   int horizontalDirection = 0;
@@ -73,7 +73,8 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
     // TODO: implement onLoad
     size = Vector2.all(32);
 
-     animations = {
+    
+   animations = {
       PlayerState.idle: SpriteAnimation.fromFrameData(
         game.images.fromCache('pink.png'),
         SpriteAnimationData.sequenced(
@@ -85,26 +86,21 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
       PlayerState.attack: SpriteAnimation.fromFrameData(
         game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Attack1_4.png'),
         SpriteAnimationData.sequenced(
-          amount: 4,  // adjust based on your sprite sheet
+          amount: 4, // adjust based on your sprite sheet
           textureSize: Vector2.all(32),
           stepTime: 0.12,
         ),
       ),
-
-      PlayerState.run : SpriteAnimation.fromFrameData(
+      PlayerState.run: SpriteAnimation.fromFrameData(
         game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Run_6.png'),
-        SpriteAnimationData.sequenced(amount: 6, stepTime: 0.15, textureSize: Vector2.all(32))
-        ),
-
-        PlayerState.jump : SpriteAnimation.fromFrameData(
+        SpriteAnimationData.sequenced(
+            amount: 6, stepTime: 0.15, textureSize: Vector2.all(32)),
+      ),
+      PlayerState.jump: SpriteAnimation.fromFrameData(
         game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Jump_8.png'),
-        SpriteAnimationData.sequenced(amount: 8, stepTime: 0.15, textureSize: Vector2.all(32))
-        ),
-
-        // PinkState.moveAttack : SpriteAnimation.fromFrameData(
-        // game.images.fromCache('sprites/Pink_Monster_Walk+Attack_6.png'),
-        // SpriteAnimationData.sequenced(amount: 8, stepTime: 0.15, textureSize: Vector2.all(32))
-        // ),
+        SpriteAnimationData.sequenced(
+            amount: 8, stepTime: 0.15, textureSize: Vector2.all(32)),
+      ),
     };
 
     // Set initial animation
@@ -208,11 +204,15 @@ void onCollisionEnd(PositionComponent other) {
   }
 
 
-  if (other is Bullet && (other.player != Player.A)){
-    
-    OnHit(2);
+  if (other is Bullet ){
+
+    if (other.player != Player.A){
+         OnHit(2);
     other.removeFromParent();
     print("I got shot");
+    }
+    
+ 
   }
 
   
@@ -278,9 +278,7 @@ void onCollisionEnd(PositionComponent other) {
    @override
   void update(double dt) {
 
-    if(health == 0){
-      print("Player dead");
-    }
+   
     // print(hasJumped);
 
     velocity2.y += gravity;  
@@ -386,15 +384,11 @@ if (hasJumped) {
     }
 
     velocity2.y = velocity2.y.clamp(-jumpSpeed, terminalVelocity);
-
-
-     if(health <= 0){
+    if(health <= 0){
     removeFromParent();  // Remove player from game
     game.gameOver();     // Trigger game over
     return;             // Stop further updates
   }
-
-
     super.update(dt);
 
   }
@@ -426,6 +420,8 @@ if (hasJumped) {
     health-=amount;
     print(health);
   }
+
+  
 
   
 

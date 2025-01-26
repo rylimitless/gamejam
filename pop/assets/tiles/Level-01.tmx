@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="25">
+<map version="1.10" tiledversion="1.11.1" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="28">
  <tileset firstgid="1" source="Pop.tsx"/>
  <layer id="1" name="Backgrounds" width="40" height="23">
   <properties>
@@ -36,9 +36,9 @@
   <object id="4" x="223.104" y="218.168" width="288.553" height="42.1454"/>
   <object id="5" x="376.918" y="76.0025" width="190.131" height="41.5087"/>
   <object id="6" x="-11.2846" y="-0.94038" width="32.9953" height="385.556"/>
-  <object id="7" x="-1.88076" y="14.664" width="617.771" height="14.3083"/>
+  <object id="7" x="-1.88076" y="14.664" width="617.771" height="21.2266"/>
   <object id="8" x="602.784" y="-0.94038" width="55.4824" height="361.203"/>
-  <object id="9" x="7.26165" y="343.925" width="624.689" height="36.9285"/>
+  <object id="9" x="1.11206" y="344.694" width="624.689" height="36.9285"/>
   <object id="10" x="559.526" y="223.81" width="18.8076" height="47.019"/>
   <object id="11" x="580.214" y="224.751" width="47.019" height="130.713"/>
   <object id="12" x="189.098" y="299.294" width="91.7382" height="53.6842"/>
@@ -52,5 +52,7 @@
   <object id="22" x="17.1805" y="251.86" width="62.3265" height="13.2483"/>
   <object id="23" x="14.9564" y="155.806" width="67.992" height="11.7768"/>
   <object id="24" x="18.5715" y="60.194" width="65.327" height="12.2249"/>
+  <object id="25" x="6.14959" y="322.853" width="59.1898" height="44.5845"/>
+  <object id="26" x="292.105" y="229.072" width="222.154" height="39.2036"/>
  </objectgroup>
 </map>
