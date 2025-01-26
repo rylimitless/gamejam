@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pop/components/block.dart';
@@ -299,6 +300,19 @@ if (hasJumped) {
   }
 
   void OnHit(){
+
+
+    add(
+    OpacityEffect.fadeOut(
+    EffectController(
+      alternate: true,
+      duration: 0.1,
+      repeatCount: 2,
+    ),
+    )..onComplete = () {
+      // hitByEnemy = false;
+    },
+  );
 
     health-=10;
     print(health);

@@ -4,11 +4,13 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pop/components/block.dart';
 import 'package:pop/components/ceiling.dart';
 import 'package:pop/components/ground.dart';
+import 'package:pop/levels/level.dart';
 import 'package:pop/pop.dart';
 import 'package:pop/components/bullet.dart';
 
@@ -21,13 +23,16 @@ enum PlayerState {attack , idle , run , jump , shoot , moveAttack}
 class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHandler,  HasGameReference<PopGame>{
 
   late final Map<PlayerState, SpriteAnimation> animations;
+  late final World world;
+
+  Pink({required this.world});
   PlayerState currentState = PlayerState.idle;
 
 
 
   double health = 100;
 
-  late final TimerComponent _bulletSpawner;
+ late final SpawnComponent _bulletSpawner;
   int horizontalDirection = 0;
   bool moving = false;
 
@@ -39,12 +44,18 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
   double attackTimer = 0.0;
   bool isAttacking = false;
 
+
+  double shoottimer = 0.0;
+  double shootduration = 0.5;
+
   double moveTimer = 0.0;
   double moveDuration = 0.5;
   bool isOnGround = false;
   bool hasJumped = false;
+  bool isShooting= false;
 
   bool ismoveAttack = false;
+
 
   final Vector2 velocity2 = Vector2.zero();
   final double moveSpeed = 100;
@@ -101,6 +112,27 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
     add(CircleHitbox());
 
+  _bulletSpawner = SpawnComponent(
+      period: .2,
+      selfPositioning: true,
+      factory: (index) {
+        final bulletDirection = scale.x;
+        return Bullet(
+          direction: bulletDirection,
+          position: position +
+              Vector2(
+                0,
+                0
+              ),
+        );
+
+      },
+      autoStart: false,
+    );
+
+    world.add(_bulletSpawner);
+
+
     return super.onLoad();
   }
 
@@ -134,7 +166,7 @@ void onCollisionEnd(PositionComponent other) {
       other.OnHit();
     }
 
-    if (other.getState()==PlayerState.attack){
+    if (other.getState() == PlayerState.attack){
       OnHit();
     }
   }
@@ -143,6 +175,8 @@ void onCollisionEnd(PositionComponent other) {
     
 
         if (intersectionPoints.length == 2) {
+
+          velocity2.x = 0;
       // Calculate the collision normal and separation distance.
       final mid = (intersectionPoints.elementAt(0) +
         intersectionPoints.elementAt(1)) / 2;
@@ -182,6 +216,26 @@ void onCollisionEnd(PositionComponent other) {
 
 
     hasJumped = keysPressed.contains(LogicalKeyboardKey.keyW);
+
+
+    if(keysPressed.contains(LogicalKeyboardKey.keyQ)){
+      isShooting = true;
+      shoottimer = 0.0;
+      startShooting();
+
+    }
+    // if (keysPressed.contains(LogicalKeyboardKey.keyQ)) {
+    //   if (!isShooting) {
+    //     startShooting();
+    //     isShooting = true;
+    //   }
+    // } else {
+    //   if (isShooting) {
+    //     stopShooting();
+    //     isShooting = false;
+    //   }
+    // }
+
 
     if (keysPressed.contains(LogicalKeyboardKey.keyG)){
       isAttacking = true;
@@ -283,10 +337,20 @@ if (hasJumped) {
     } else if (horizontalDirection > 0 && scale.x < 0) {
       flipHorizontally();
     }
+ add(
+    OpacityEffect.fadeOut(
+    EffectController(
+      alternate: true,
+      duration: 0.1,
+      repeatCount: 2,
+    ),
+    )..onComplete = () {
+      // hitByEnemy = false;
+    },
+  );
 
     }
 
-    
     // Handle attack timer
     if (isAttacking) {
       attackTimer += dt;
@@ -296,6 +360,16 @@ if (hasJumped) {
         attackTimer = 0.0;
         currentState = PlayerState.idle;
         animation = animations[currentState];
+      }
+    }
+
+      if (isShooting) {
+      shoottimer += dt;
+      if (shoottimer >= shootduration) {
+        // Reset attack state
+        isShooting = false;
+        shoottimer = 0.0;
+        stopShooting();
       }
     }
 
@@ -309,7 +383,25 @@ if (hasJumped) {
     _bulletSpawner.timer.start();
   }
 
+    void stopShooting() {
+    _bulletSpawner.timer.stop();
+  }
+
+
+
   void OnHit(){
+
+ add(
+    OpacityEffect.fadeOut(
+    EffectController(
+      alternate: true,
+      duration: 0.1,
+      repeatCount: 2,
+    ),
+    )..onComplete = () {
+      // hitByEnemy = false;
+    },
+  );
 
     health-=10;
     print(health);

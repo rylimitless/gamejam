@@ -5,6 +5,7 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:pop/components/block.dart';
 import 'package:pop/components/ceiling.dart';
 import 'package:pop/components/ground.dart';
+import 'package:pop/levels/level.dart';
 
 class Level extends World{
 

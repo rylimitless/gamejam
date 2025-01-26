@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flame/components.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:pop/players/dude.dart';
@@ -16,6 +17,8 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
   Color backgroundColor() => const Color(0xFF211F30);
 
   late final CameraComponent cam;
+
+  @override
   final world = Level();
 
 
@@ -41,19 +44,14 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
         world: world, width: 640, height: 360);
     cam.viewfinder.anchor = Anchor.topLeft;
 
+    camera.viewfinder.anchor = Anchor.topLeft;
+
     addAll([cam, world]);
 
-    var level = Level();
-    add(level);
-
-
-var _pink = Pink()
-    ..position = Vector2(100, 90)
+var _pink = Pink(world: world)
+    ..position = Vector2(320, 180)
     ..debugMode = true; // Enable debug mode for Pink
   world.add(_pink);
-
-  
-  camera.follow(_pink);
 
     var _dude = Dude()..position = Vector2(165 , 80);
     world.add(_dude);
