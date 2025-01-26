@@ -64,7 +64,7 @@ var _pink = Pink(world: world)
     camera.viewport.add(Hud(pink: _pink));
 
 
-    var _dude = Dude()..position = Vector2(165 , 80);
+    var _dude = Dude(world: world)..position = Vector2(165 , 80);
     world.add(_dude);
     // TODO: implement onLoad
     return super.onLoad();

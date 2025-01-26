@@ -1,7 +1,7 @@
 
 
 import 'dart:async';
-
+// import 'package:flame_audio/flame_audio.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:pop/components/block.dart';
 import 'package:pop/components/ceiling.dart';
 import 'package:pop/components/ground.dart';
+import 'package:pop/levels/level.dart';
 import 'package:pop/pop.dart';
 import 'package:pop/components/bullet.dart';
 
@@ -22,34 +23,44 @@ enum PlayerState {attack , idle , run , jump , shoot , moveAttack}
 class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHandler,  HasGameReference<PopGame>{
 
   late final Map<PlayerState, SpriteAnimation> animations;
+  late final World world;
+
+  Dude({required this.world});
   PlayerState currentState = PlayerState.idle;
+
+
 
   double health = 100;
 
-  late final TimerComponent _bulletSpawner;
+ late final SpawnComponent _bulletSpawner;
   int horizontalDirection = 0;
   bool moving = false;
 
   final double gravity = 15;
-  final double jumpSpeed = 600;
+  final double jumpSpeed = 400;
   final double terminalVelocity = 150;
 
   double attackDuration = 1.0; // Duration in seconds
   double attackTimer = 0.0;
   bool isAttacking = false;
 
+
+  double shoottimer = 0.0;
+  double shootduration = 0.5;
+
   double moveTimer = 0.0;
   double moveDuration = 0.5;
   bool isOnGround = false;
   bool hasJumped = false;
+  bool isShooting= false;
 
   bool ismoveAttack = false;
 
+
   final Vector2 velocity2 = Vector2.zero();
-  final double moveSpeed = 100;
+  final double moveSpeed = 70;
   final Vector2 fromAbove = Vector2(0, -1);
   final Vector2 fromBelow = Vector2(0, 1);
-
 
 
   PlayerState getState() {
@@ -62,7 +73,8 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
     // TODO: implement onLoad
     size = Vector2.all(32);
 
-     animations = {
+    
+    animations = {
       PlayerState.idle: SpriteAnimation.fromFrameData(
         game.images.fromCache('sprites/Dude_Monster/Dude_Monster_Idle_4.png'),
         SpriteAnimationData.sequenced(
@@ -101,6 +113,30 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
     add(CircleHitbox());
 
+  _bulletSpawner = SpawnComponent(
+      period: .2,
+      selfPositioning: true,
+      factory: (index) {
+        final bulletDirection = scale.x;
+        return Bullet(
+          player: Player.B,
+          direction: bulletDirection,
+          position: position +
+              Vector2(
+                0,
+                0
+              ),
+        );
+
+      },
+      autoStart: false,
+    );
+
+    world.add(_bulletSpawner);
+
+
+
+
     return super.onLoad();
   }
 
@@ -117,7 +153,7 @@ void onCollisionEnd(PositionComponent other) {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
 
-   if (other is Pink) {
+   if (other is Dude) {
     if (intersectionPoints.length == 2) {
       // Calculate the collision normal and separation distance.
       final mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
@@ -128,9 +164,14 @@ void onCollisionEnd(PositionComponent other) {
         position += collisionNormal.scaled(separationDistance);
     }
 
+
     //TODO add checks to see who is attacking or so
     if (currentState == PlayerState.attack){
       other.OnHit(10);
+    }
+
+    if (other.getState() == PlayerState.attack){
+      OnHit(10);
     }
   }
 
@@ -138,6 +179,8 @@ void onCollisionEnd(PositionComponent other) {
     
 
         if (intersectionPoints.length == 2) {
+
+          velocity2.x = 0;
       // Calculate the collision normal and separation distance.
       final mid = (intersectionPoints.elementAt(0) +
         intersectionPoints.elementAt(1)) / 2;
@@ -160,8 +203,21 @@ void onCollisionEnd(PositionComponent other) {
       // collision normal by separation distance.
       position += collisionNormal.scaled(separationDistance);
       }
-    
+      
+
+
   }
+
+
+  if (other is Bullet && (other.player != Player.B)){
+    
+    OnHit(2);
+    other.removeFromParent();
+    print("I got shot");
+  }
+
+  
+
 
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
@@ -172,6 +228,27 @@ void onCollisionEnd(PositionComponent other) {
 
 
     hasJumped = keysPressed.contains(LogicalKeyboardKey.arrowUp);
+
+
+    if(keysPressed.contains(LogicalKeyboardKey.equal)){
+      // FlameAudio.play('shooting_sound.mp3');
+      isShooting = true;
+      shoottimer = 0.0;
+      startShooting();
+
+    }
+    // if (keysPressed.contains(LogicalKeyboardKey.keyQ)) {
+    //   if (!isShooting) {
+    //     startShooting();
+    //     isShooting = true;
+    //   }
+    // } else {
+    //   if (isShooting) {
+    //     stopShooting();
+    //     isShooting = false;
+    //   }
+    // }
+
 
     if (keysPressed.contains(LogicalKeyboardKey.enter)){
       isAttacking = true;
@@ -273,10 +350,20 @@ if (hasJumped) {
     } else if (horizontalDirection > 0 && scale.x < 0) {
       flipHorizontally();
     }
+ add(
+    OpacityEffect.fadeOut(
+    EffectController(
+      alternate: true,
+      duration: 0.1,
+      repeatCount: 2,
+    ),
+    )..onComplete = () {
+      // hitByEnemy = false;
+    },
+  );
 
     }
 
-    
     // Handle attack timer
     if (isAttacking) {
       attackTimer += dt;
@@ -286,6 +373,16 @@ if (hasJumped) {
         attackTimer = 0.0;
         currentState = PlayerState.idle;
         animation = animations[currentState];
+      }
+    }
+
+      if (isShooting) {
+      shoottimer += dt;
+      if (shoottimer >= shootduration) {
+        // Reset attack state
+        isShooting = false;
+        shoottimer = 0.0;
+        stopShooting();
       }
     }
 
@@ -299,10 +396,15 @@ if (hasJumped) {
     _bulletSpawner.timer.start();
   }
 
-  void OnHit(){
+    void stopShooting() {
+    _bulletSpawner.timer.stop();
+  }
 
 
-    add(
+
+  void OnHit(int amount ){
+
+ add(
     OpacityEffect.fadeOut(
     EffectController(
       alternate: true,
@@ -314,7 +416,7 @@ if (hasJumped) {
     },
   );
 
-    health-=10;
+    health-=amount;
     print(health);
   }
 
