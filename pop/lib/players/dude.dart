@@ -50,6 +50,12 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
   final Vector2 fromBelow = Vector2(0, 1);
 
 
+
+  PlayerState getState() {
+    return currentState;
+  }
+
+
   @override
   FutureOr<void> onLoad() {
     // TODO: implement onLoad
@@ -57,7 +63,7 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
      animations = {
       PlayerState.idle: SpriteAnimation.fromFrameData(
-        game.images.fromCache('pink.png'),
+        game.images.fromCache('sprites/Dude_Monster/Dude_Monster_Idle_4.png'),
         SpriteAnimationData.sequenced(
           amount: 4,
           textureSize: Vector2.all(32),
@@ -65,7 +71,7 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
         ),
       ),
       PlayerState.attack: SpriteAnimation.fromFrameData(
-        game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Attack1_4.png'),
+        game.images.fromCache('sprites/Dude_Monster/Dude_Monster_Attack1_4.png'),
         SpriteAnimationData.sequenced(
           amount: 4,  // adjust based on your sprite sheet
           textureSize: Vector2.all(32),
@@ -74,12 +80,12 @@ class Dude extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
       ),
 
       PlayerState.run : SpriteAnimation.fromFrameData(
-        game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Run_6.png'),
+        game.images.fromCache('sprites/Dude_Monster/Dude_Monster_Run_6.png'),
         SpriteAnimationData.sequenced(amount: 6, stepTime: 0.15, textureSize: Vector2.all(32))
         ),
 
         PlayerState.jump : SpriteAnimation.fromFrameData(
-        game.images.fromCache('sprites/Pink_Monster/Pink_Monster_Jump_8.png'),
+        game.images.fromCache('sprites/Dude_Monster/Dude_Monster_Jump_8.png'),
         SpriteAnimationData.sequenced(amount: 8, stepTime: 0.15, textureSize: Vector2.all(32))
         ),
 
@@ -121,8 +127,6 @@ void onCollisionEnd(PositionComponent other) {
         position += collisionNormal.scaled(separationDistance);
     }
 
-    OnHit();
-
     //TODO add checks to see who is attacking or so
     if (currentState == PlayerState.attack){
       other.OnHit();
@@ -155,13 +159,8 @@ void onCollisionEnd(PositionComponent other) {
       // collision normal by separation distance.
       position += collisionNormal.scaled(separationDistance);
       }
-      
-
-
+    
   }
-
-  
-
 
     // TODO: implement onCollision
     super.onCollision(intersectionPoints, other);
@@ -171,9 +170,9 @@ void onCollisionEnd(PositionComponent other) {
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
 
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.keyW);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.arrowUp);
 
-    if (keysPressed.contains(LogicalKeyboardKey.keyG)){
+    if (keysPressed.contains(LogicalKeyboardKey.enter)){
       isAttacking = true;
       attackTimer = 0.0;
       currentState = PlayerState.attack;

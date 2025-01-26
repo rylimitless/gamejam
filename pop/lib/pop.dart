@@ -30,6 +30,9 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
       // "Pink_Monster6.png",
       "weapons/bubbleball.png",
       "sprites/Dude_Monster/Dude_Monster_Idle_4.png",
+      "sprites/Dude_Monster/Dude_Monster_Attack1_4.png",
+      "sprites/Dude_Monster/Dude_Monster_Run_6.png",
+      "sprites/Dude_Monster/Dude_Monster_Jump_8.png",
       "bubbleball1.png"
     
     ]);

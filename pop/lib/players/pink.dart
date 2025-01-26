@@ -23,6 +23,8 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
   late final Map<PlayerState, SpriteAnimation> animations;
   PlayerState currentState = PlayerState.idle;
 
+
+
   double health = 100;
 
   late final TimerComponent _bulletSpawner;
@@ -48,6 +50,11 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
   final double moveSpeed = 100;
   final Vector2 fromAbove = Vector2(0, -1);
   final Vector2 fromBelow = Vector2(0, 1);
+
+
+  PlayerState getState() {
+    return currentState;
+  }
 
 
   @override
@@ -121,11 +128,14 @@ void onCollisionEnd(PositionComponent other) {
         position += collisionNormal.scaled(separationDistance);
     }
 
-    OnHit();
 
     //TODO add checks to see who is attacking or so
     if (currentState == PlayerState.attack){
       other.OnHit();
+    }
+
+    if (other.getState()==PlayerState.attack){
+      OnHit();
     }
   }
 
