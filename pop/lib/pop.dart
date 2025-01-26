@@ -1,0 +1,61 @@
+import 'dart:async';
+
+import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
+import 'package:flame/game.dart';
+import 'package:pop/players/dude.dart';
+import 'package:pop/players/pink.dart';
+import 'package:flame/events.dart';
+import 'package:flutter/material.dart';
+import 'package:pop/levels/level.dart';
+
+
+class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollisionDetection{
+
+@override 
+  Color backgroundColor() => const Color(0xFF211F30);
+
+  late final CameraComponent cam;
+  final world = Level();
+
+
+    @override
+  FutureOr<void> onLoad() async {
+   await Flame.images.loadAll([
+      "block.png",
+      "pink.png",
+      "sprites/Pink_Monster/Pink_Monster_Attack1_4.png",
+      "sprites/Pink_Monster/Pink_Monster_Run_6.png",
+      "sprites/Pink_Monster/Pink_Monster_Jump_8.png",
+      // "Pink_Monster6.png",
+      "weapons/bubbleball.png",
+      "sprites/Dude_Monster/Dude_Monster_Idle_4.png",
+      "bubbleball1.png"
+    
+    ]);
+
+     cam = CameraComponent.withFixedResolution(
+        world: world, width: 640, height: 360);
+    cam.viewfinder.anchor = Anchor.topLeft;
+
+    addAll([cam, world]);
+
+    var level = Level();
+    add(level);
+
+
+var _pink = Pink()
+    ..position = Vector2(100, 90)
+    ..debugMode = true; // Enable debug mode for Pink
+  world.add(_pink);
+
+  
+  camera.follow(_pink);
+
+    var _dude = Dude()..position = Vector2(165 , 80);
+    world.add(_dude);
+    // TODO: implement onLoad
+    return super.onLoad();
+
+  }
+}
