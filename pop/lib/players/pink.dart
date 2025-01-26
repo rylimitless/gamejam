@@ -37,7 +37,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
   bool moving = false;
 
   final double gravity = 15;
-  final double jumpSpeed = 600;
+  final double jumpSpeed = 400;
   final double terminalVelocity = 150;
 
   double attackDuration = 1.0; // Duration in seconds
@@ -58,7 +58,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
 
   final Vector2 velocity2 = Vector2.zero();
-  final double moveSpeed = 100;
+  final double moveSpeed = 70;
   final Vector2 fromAbove = Vector2(0, -1);
   final Vector2 fromBelow = Vector2(0, 1);
 
@@ -118,6 +118,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
       factory: (index) {
         final bulletDirection = scale.x;
         return Bullet(
+          player: Player.A,
           direction: bulletDirection,
           position: position +
               Vector2(
@@ -131,6 +132,8 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
     );
 
     world.add(_bulletSpawner);
+
+  
 
 
     return super.onLoad();
@@ -167,7 +170,7 @@ void onCollisionEnd(PositionComponent other) {
     }
 
     if (other.getState() == PlayerState.attack){
-      OnHit();
+      OnHit(10);
     }
   }
 
@@ -202,6 +205,14 @@ void onCollisionEnd(PositionComponent other) {
       
 
 
+  }
+
+
+  if (other is Bullet && (other.player != Player.A)){
+    
+    OnHit(2);
+    other.removeFromParent();
+    print("I got shot");
   }
 
   
@@ -389,7 +400,7 @@ if (hasJumped) {
 
 
 
-  void OnHit(){
+  void OnHit(int amount ){
 
  add(
     OpacityEffect.fadeOut(
@@ -403,7 +414,7 @@ if (hasJumped) {
     },
   );
 
-    health-=10;
+    health-=amount;
     print(health);
   }
 

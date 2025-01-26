@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:pop/hud.dart';
 import 'package:pop/players/dude.dart';
 import 'package:pop/players/pink.dart';
 import 'package:flame/events.dart';
@@ -36,7 +37,11 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
       "sprites/Dude_Monster/Dude_Monster_Attack1_4.png",
       "sprites/Dude_Monster/Dude_Monster_Run_6.png",
       "sprites/Dude_Monster/Dude_Monster_Jump_8.png",
-      "bubbleball1.png"
+      "bubbleball1.png",
+      'Background/Gray.png',
+      'Background/Blue.png',
+      'Background/Purple.png',
+      'Background/Brown.png',
     
     ]);
 
@@ -46,12 +51,18 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
 
     camera.viewfinder.anchor = Anchor.topLeft;
 
+
     addAll([cam, world]);
+
+
 
 var _pink = Pink(world: world)
     ..position = Vector2(320, 180)
     ..debugMode = true; // Enable debug mode for Pink
   world.add(_pink);
+
+    camera.viewport.add(Hud(pink: _pink));
+
 
     var _dude = Dude()..position = Vector2(165 , 80);
     world.add(_dude);

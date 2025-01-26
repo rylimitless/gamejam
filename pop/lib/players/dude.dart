@@ -130,7 +130,7 @@ void onCollisionEnd(PositionComponent other) {
 
     //TODO add checks to see who is attacking or so
     if (currentState == PlayerState.attack){
-      other.OnHit();
+      other.OnHit(10);
     }
   }
 

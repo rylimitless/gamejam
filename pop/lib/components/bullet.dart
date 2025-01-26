@@ -4,16 +4,20 @@ import 'package:flame/flame.dart';
 import 'package:flame/components.dart';
 import 'package:pop/pop.dart';
 
+enum Player {A , B}
+
 class Bullet extends SpriteAnimationComponent with HasGameReference<PopGame> {
   final double direction;
   final double speed = 500;
+  final Player player;
 
   Bullet({
+    required this.player,
     required super.position,
     this.direction = 1.0,  // Default direction is right
   }) : super(
     size: Vector2(25, 50),
-    anchor: Anchor.center,
+    anchor: Anchor.bottomCenter,
   );
 
   @override
@@ -28,7 +32,7 @@ class Bullet extends SpriteAnimationComponent with HasGameReference<PopGame> {
       ),
     );
     
-    add(RectangleHitbox());
+    add(RectangleHitbox(priority: debugCoordinatesPrecision));
   }
 
   @override
