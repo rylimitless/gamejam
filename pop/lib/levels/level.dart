@@ -17,6 +17,7 @@ class Level extends World{
 
     // final obstacleGroup = level.tileMap.getLayer<ObjectGroup>('boarder');
     final blockGroup = level.tileMap.getLayer<ObjectGroup>('blocks');
+    final wallBlocks = level.tileMap.getLayer<ObjectGroup>('boarder');
 
     // final CeilingGroup = level.tileMap.getLayer<ObjectGroup>('ceiling');
 
@@ -30,6 +31,14 @@ class Level extends World{
 
     for (final obj in blockGroup!.objects){
       add(BlockComponent(groundSize: Vector2(obj.width,obj.height), gridPosition: Vector2(obj.x, obj.y)));
+    }
+    add(BlockComponent(groundSize:Vector2(32,39) , gridPosition:Vector2(320,250)));
+    add(BlockComponent(groundSize:Vector2(16,16) , gridPosition:Vector2(320,128)));
+    for(final obj in wallBlocks!.objects ){
+      if (obj.id != 19 && obj.id != 42 && obj.id != 47   ){
+        add(BlockComponent(groundSize: Vector2(obj.width,obj.height), gridPosition: Vector2(obj.x, obj.y)));
+      }
+
     }
 
     add(level);
