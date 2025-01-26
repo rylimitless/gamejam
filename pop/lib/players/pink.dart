@@ -1,7 +1,7 @@
 
 
 import 'dart:async';
-
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -133,7 +133,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
     world.add(_bulletSpawner);
 
-  
+
 
 
     return super.onLoad();
@@ -230,6 +230,7 @@ void onCollisionEnd(PositionComponent other) {
 
 
     if(keysPressed.contains(LogicalKeyboardKey.keyQ)){
+      FlameAudio.play('shooting_sound.mp3');
       isShooting = true;
       shoottimer = 0.0;
       startShooting();
