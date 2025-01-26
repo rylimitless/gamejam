@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:pop/hud.dart';
 import 'package:pop/players/dude.dart';
 import 'package:pop/players/pink.dart';
@@ -73,6 +74,8 @@ _pink = Pink(world: world)
 
      _dude = Dude(world: world)..position = Vector2(165 , 80);
     world.add(_dude);
+
+    FlameAudio.bgm.play('game_song_1.mp3');
     // TODO: implement onLoad
     return super.onLoad();
 
