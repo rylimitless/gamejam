@@ -11,18 +11,24 @@ class Pop extends FlameGame {
   Color backgroundColor() => const Color(0xFF211F30);
 
   late final CameraComponent cam;
+  @override
   final world = Level();
 
   @override
-  FutureOr<void> onLoad() {
+  Future<void> onLoad() async {
+    await super.onLoad();
+    await images.loadAll([
+      'Background/Gray.png',
+      'Background/Blue.png',
+      'Background/Purple.png',
+      'Background/Brown.png',
+      // Add other background images here
+    ]);
 
     cam = CameraComponent.withFixedResolution(
         world: world, width: 640, height: 360);
     cam.viewfinder.anchor = Anchor.topLeft;
 
     addAll([cam, world]);
-
-    add(Level());
-    return super.onLoad();
   }
 }
