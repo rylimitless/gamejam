@@ -10,7 +10,7 @@ import 'package:pop/players/pink.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:pop/levels/level.dart';
-
+import 'package:pop/overlays/game_over.dart';
 
 class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollisionDetection{
 
@@ -18,9 +18,42 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
   Color backgroundColor() => const Color(0xFF211F30);
 
   late final CameraComponent cam;
+  late  Pink _pink;
+  late Dude _dude;
 
   @override
   final world = Level();
+
+  void gameOver() {
+    pauseEngine();
+    overlays.add('GameOver');  // Add a game over overlay
+  }
+
+  void reset() async {
+    // Clear existing game state
+    world.removeAll(world.children);
+    
+    // Create new world
+    world = Level();
+    
+    cam.viewfinder.anchor = Anchor.topLeft;
+
+    // Add components back
+    addAll([cam, world]);
+
+
+  world.add(_pink);
+
+    camera.viewport.add(Hud(pink: _pink));
+
+
+    var _dude = Dude(world: world)..position = Vector2(165 , 80);
+    world.add(_dude);
+
+    resumeEngine();
+
+    // Reset any game state variables
+  }
 
 
     @override
@@ -56,7 +89,7 @@ class PopGame extends FlameGame with HasKeyboardHandlerComponents , HasCollision
 
 
 
-var _pink = Pink(world: world)
+_pink = Pink(world: world)
     ..position = Vector2(320, 180)
     ..debugMode = true; // Enable debug mode for Pink
   world.add(_pink);
@@ -64,7 +97,7 @@ var _pink = Pink(world: world)
     camera.viewport.add(Hud(pink: _pink));
 
 
-    var _dude = Dude(world: world)..position = Vector2(165 , 80);
+     _dude = Dude(world: world)..position = Vector2(165 , 80);
     world.add(_dude);
     // TODO: implement onLoad
     return super.onLoad();

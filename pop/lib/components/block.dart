@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:pop/components/bullet.dart';
+import 'package:pop/players/dude.dart';
+import 'package:pop/players/pink.dart';
 
 class BlockComponent extends PositionComponent with CollisionCallbacks{
 

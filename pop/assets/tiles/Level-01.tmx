@@ -33,15 +33,15 @@
  </layer>
  <objectgroup id="4" name="block">
   <object id="3" x="183.681" y="92.4836" width="127.063" height="170.823"/>
-  <object id="4" x="319.191" y="218.168" width="153.262" height="41.3767"/>
+  <object id="4" x="223.104" y="218.168" width="288.553" height="42.1454"/>
   <object id="5" x="376.918" y="76.0025" width="190.131" height="41.5087"/>
-  <object id="6" x="-11.2846" y="-0.94038" width="29.1518" height="385.556"/>
-  <object id="7" x="-1.88076" y="-29.1518" width="597.785" height="48.8998"/>
-  <object id="8" x="602.784" y="-0.94038" width="55.4824" height="215.919"/>
-  <object id="9" x="21.8669" y="347" width="550.894" height="33.8537"/>
+  <object id="6" x="-11.2846" y="-0.94038" width="32.9953" height="385.556"/>
+  <object id="7" x="-1.88076" y="14.664" width="617.771" height="14.3083"/>
+  <object id="8" x="602.784" y="-0.94038" width="55.4824" height="361.203"/>
+  <object id="9" x="7.26165" y="343.925" width="624.689" height="36.9285"/>
   <object id="10" x="559.526" y="223.81" width="18.8076" height="47.019"/>
   <object id="11" x="580.214" y="224.751" width="47.019" height="130.713"/>
-  <object id="12" x="187.561" y="296.988" width="91.7382" height="46.7659"/>
+  <object id="12" x="189.098" y="299.294" width="91.7382" height="53.6842"/>
   <object id="13" x="179.613" y="303.743" width="17.8672"/>
   <object id="16" x="315.027" y="265.09" width="39.496" height="25.4877"/>
   <object id="17" x="481.81" y="218.624" width="34.4584" height="56.9069"/>

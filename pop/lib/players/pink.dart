@@ -30,7 +30,7 @@ class Pink extends SpriteAnimationComponent with  CollisionCallbacks, KeyboardHa
 
 
 
-  double health = 100;
+  double health = 10;
 
  late final SpawnComponent _bulletSpawner;
   int horizontalDirection = 0;
@@ -386,6 +386,14 @@ if (hasJumped) {
     }
 
     velocity2.y = velocity2.y.clamp(-jumpSpeed, terminalVelocity);
+
+
+     if(health <= 0){
+    removeFromParent();  // Remove player from game
+    game.gameOver();     // Trigger game over
+    return;             // Stop further updates
+  }
+
 
     super.update(dt);
 
