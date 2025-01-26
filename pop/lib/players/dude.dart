@@ -153,7 +153,7 @@ void onCollisionEnd(PositionComponent other) {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
 
-   if (other is Dude) {
+   if (other is Pink) {
     if (intersectionPoints.length == 2) {
       // Calculate the collision normal and separation distance.
       final mid = (intersectionPoints.elementAt(0) + intersectionPoints.elementAt(1)) / 2;
